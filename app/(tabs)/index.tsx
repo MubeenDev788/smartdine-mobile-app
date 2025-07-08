@@ -5,7 +5,7 @@ import { Colors, Spacing, FontSize, FontWeight } from '@/constants/Colors';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/contexts/AuthContext';
-import { Star, MapPin, Clock, Users, TrendingUp, Calendar, DollarSign, BarChart3, PieChart, Activity } from 'lucide-react-native';
+import { Star, MapPin, Clock, Users, TrendingUp, Calendar, DollarSign, ChartBar as BarChart3, ChartPie as PieChart, Activity } from 'lucide-react-native';
 import { LineChart, BarChart, PieChart as RNPieChart } from 'react-native-chart-kit';
 import { LinearGradient } from 'expo-linear-gradient';
 
