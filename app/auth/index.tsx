@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView, ImageBackground } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, Dimensions, ImageBackground } from 'react-native';
 import { router } from 'expo-router';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, withDelay, withSequence, interpolate } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, withDelay, withSequence } from 'react-native-reanimated';
 import { Colors, Spacing, FontSize, FontWeight } from '@/constants/Colors';
 import { Button } from '@/components/ui/Button';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,7 +9,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 const { width, height } = Dimensions.get('window');
 
 export default function AuthIndex() {
-  const scrollY = useSharedValue(0);
   const fadeAnim = useSharedValue(0);
   const slideAnim = useSharedValue(50);
   const scaleAnim = useSharedValue(0.8);
@@ -40,129 +39,81 @@ export default function AuthIndex() {
     };
   });
 
-  const parallaxStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: interpolate(
-            scrollY.value,
-            [0, height],
-            [0, -height * 0.3]
-          ),
-        },
-      ],
-    };
-  });
-
   return (
     <View style={styles.container}>
-      {/* Background Video/Image with Overlay */}
+      {/* Background Image with Overlay */}
       <ImageBackground
         source={{ uri: 'https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1200' }}
         style={styles.backgroundImage}
         resizeMode="cover"
       >
         <LinearGradient
-          colors={['rgba(0,0,0,0.7)', 'rgba(255,107,53,0.8)', 'rgba(0,0,0,0.9)']}
+          colors={['rgba(0,0,0,0.6)', 'rgba(255,107,53,0.8)', 'rgba(0,0,0,0.8)']}
           style={styles.overlay}
         />
       </ImageBackground>
 
-      <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-        onScroll={(event) => {
-          scrollY.value = event.nativeEvent.contentOffset.y;
-        }}
-        scrollEventThrottle={16}
-      >
+      {/* Content */}
+      <View style={styles.content}>
         {/* Hero Section */}
-        <Animated.View style={[styles.heroSection, parallaxStyle]}>
-          <Animated.View style={[styles.logoContainer, headerAnimatedStyle]}>
+        <Animated.View style={[styles.heroSection, headerAnimatedStyle]}>
+          <View style={styles.logoContainer}>
             <View style={styles.logoWrapper}>
               <Text style={styles.logoEmoji}>🍽️</Text>
             </View>
-            <View style={styles.logoGlow} />
-          </Animated.View>
+          </View>
 
-          <Animated.View style={[styles.titleContainer, headerAnimatedStyle]}>
-            <Text style={styles.mainTitle}>SmartDine AI</Text>
-            <Text style={styles.subtitle}>Revolutionizing Restaurant Experience</Text>
-            <Text style={styles.tagline}>Book • Order • Dine • Enjoy</Text>
-          </Animated.View>
+          <Text style={styles.mainTitle}>SmartDine AI</Text>
+          <Text style={styles.subtitle}>Revolutionizing Restaurant Experience</Text>
+          <Text style={styles.tagline}>Book • Order • Dine • Enjoy</Text>
         </Animated.View>
 
         {/* Features Section */}
         <Animated.View style={[styles.featuresSection, contentAnimatedStyle]}>
           <View style={styles.featureCard}>
-            <LinearGradient
-              colors={[Colors.primary + '20', Colors.primary + '10']}
-              style={styles.featureGradient}
-            >
-              <Text style={styles.featureEmoji}>🎯</Text>
-              <Text style={styles.featureTitle}>Smart Table Booking</Text>
-              <Text style={styles.featureDescription}>
-                Find and reserve the perfect table with AI-powered recommendations
-              </Text>
-            </LinearGradient>
+            <Text style={styles.featureEmoji}>🎯</Text>
+            <Text style={styles.featureTitle}>Smart Table Booking</Text>
+            <Text style={styles.featureDescription}>
+              Find and reserve the perfect table with AI-powered recommendations
+            </Text>
           </View>
 
           <View style={styles.featureCard}>
-            <LinearGradient
-              colors={[Colors.secondary + '20', Colors.secondary + '10']}
-              style={styles.featureGradient}
-            >
-              <Text style={styles.featureEmoji}>🍜</Text>
-              <Text style={styles.featureTitle}>Pre-Order Meals</Text>
-              <Text style={styles.featureDescription}>
-                Order your favorite dishes before arriving to skip the wait
-              </Text>
-            </LinearGradient>
+            <Text style={styles.featureEmoji}>🍜</Text>
+            <Text style={styles.featureTitle}>Pre-Order Meals</Text>
+            <Text style={styles.featureDescription}>
+              Order your favorite dishes before arriving to skip the wait
+            </Text>
           </View>
 
           <View style={styles.featureCard}>
-            <LinearGradient
-              colors={[Colors.accent + '20', Colors.accent + '10']}
-              style={styles.featureGradient}
-            >
-              <Text style={styles.featureEmoji}>💳</Text>
-              <Text style={styles.featureTitle}>Secure Payments</Text>
-              <Text style={styles.featureDescription}>
-                Multiple payment options with secure transactions
-              </Text>
-            </LinearGradient>
+            <Text style={styles.featureEmoji}>💳</Text>
+            <Text style={styles.featureTitle}>Secure Payments</Text>
+            <Text style={styles.featureDescription}>
+              Multiple payment options with secure transactions
+            </Text>
           </View>
         </Animated.View>
 
         {/* CTA Section */}
         <Animated.View style={[styles.ctaSection, contentAnimatedStyle]}>
-          <View style={styles.ctaCard}>
-            <LinearGradient
-              colors={[Colors.primary, Colors.primaryDark]}
-              style={styles.ctaGradient}
-            >
-              <Text style={styles.ctaTitle}>Ready to Transform Your Dining?</Text>
-              <Text style={styles.ctaSubtitle}>Join thousands of satisfied customers</Text>
-              
-              <View style={styles.buttonContainer}>
-                <Button
-                  title="Get Started"
-                  onPress={() => router.push('/auth/role-selection')}
-                  variant="secondary"
-                  size="large"
-                  style={styles.primaryButton}
-                />
-                
-                <Button
-                  title="Already have an account?"
-                  onPress={() => router.push('/auth/sign-in')}
-                  variant="ghost"
-                  size="medium"
-                  style={styles.secondaryButton}
-                  textStyle={styles.secondaryButtonText}
-                />
-              </View>
-            </LinearGradient>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Get Started"
+              onPress={() => router.push('/auth/role-selection')}
+              variant="primary"
+              size="large"
+              style={styles.primaryButton}
+            />
+            
+            <Button
+              title="Already have an account?"
+              onPress={() => router.push('/auth/sign-in')}
+              variant="ghost"
+              size="medium"
+              style={styles.secondaryButton}
+              textStyle={styles.secondaryButtonText}
+            />
           </View>
         </Animated.View>
 
@@ -181,7 +132,7 @@ export default function AuthIndex() {
             <Text style={styles.statLabel}>Successful Bookings</Text>
           </View>
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -196,23 +147,24 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: height * 1.2,
+    bottom: 0,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
   },
-  scrollView: {
+  content: {
     flex: 1,
+    justifyContent: 'space-between',
+    paddingHorizontal: Spacing.xl,
+    paddingVertical: Spacing.xxl,
   },
   heroSection: {
-    height: height * 0.8,
-    justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: Spacing.xl,
+    marginTop: height * 0.1,
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: Spacing.xxl,
+    marginBottom: Spacing.xl,
   },
   logoWrapper: {
     width: 120,
@@ -226,21 +178,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 20,
     elevation: 10,
+    marginBottom: Spacing.lg,
   },
   logoEmoji: {
     fontSize: 48,
-  },
-  logoGlow: {
-    position: 'absolute',
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    backgroundColor: Colors.primary + '30',
-    top: -10,
-    left: -10,
-  },
-  titleContainer: {
-    alignItems: 'center',
   },
   mainTitle: {
     fontSize: FontSize.xxxl + 8,
@@ -269,77 +210,40 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   featuresSection: {
-    paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.xxl,
     gap: Spacing.lg,
+    marginVertical: Spacing.xl,
   },
   featureCard: {
-    borderRadius: 20,
-    overflow: 'hidden',
-    shadowColor: Colors.textPrimary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  featureGradient: {
-    padding: Spacing.xl,
+    backgroundColor: Colors.surface + '15',
+    padding: Spacing.lg,
+    borderRadius: 16,
     alignItems: 'center',
+    backdropFilter: 'blur(10px)',
   },
   featureEmoji: {
-    fontSize: 40,
-    marginBottom: Spacing.md,
+    fontSize: 32,
+    marginBottom: Spacing.sm,
   },
   featureTitle: {
-    fontSize: FontSize.lg,
+    fontSize: FontSize.md,
     fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
+    color: Colors.surface,
     textAlign: 'center',
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.xs,
     fontFamily: 'Poppins-Bold',
   },
   featureDescription: {
-    fontSize: FontSize.md,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    lineHeight: 22,
-    fontFamily: 'Inter-Regular',
-  },
-  ctaSection: {
-    paddingHorizontal: Spacing.xl,
-    marginBottom: Spacing.xxl,
-  },
-  ctaCard: {
-    borderRadius: 24,
-    overflow: 'hidden',
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
-    elevation: 8,
-  },
-  ctaGradient: {
-    padding: Spacing.xxl,
-    alignItems: 'center',
-  },
-  ctaTitle: {
-    fontSize: FontSize.xl,
-    fontWeight: FontWeight.bold,
+    fontSize: FontSize.sm,
     color: Colors.surface,
     textAlign: 'center',
-    marginBottom: Spacing.sm,
-    fontFamily: 'Poppins-Bold',
-  },
-  ctaSubtitle: {
-    fontSize: FontSize.md,
-    color: Colors.surface,
-    textAlign: 'center',
-    marginBottom: Spacing.xl,
+    lineHeight: 20,
     fontFamily: 'Inter-Regular',
     opacity: 0.9,
   },
+  ctaSection: {
+    marginBottom: Spacing.lg,
+  },
   buttonContainer: {
-    width: '100%',
     gap: Spacing.md,
   },
   primaryButton: {
@@ -361,18 +265,15 @@ const styles = StyleSheet.create({
   statsSection: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.xxl,
     backgroundColor: Colors.surface + '10',
-    marginHorizontal: Spacing.xl,
-    borderRadius: 20,
-    marginBottom: Spacing.xxl,
+    borderRadius: 16,
+    paddingVertical: Spacing.lg,
   },
   statItem: {
     alignItems: 'center',
   },
   statNumber: {
-    fontSize: FontSize.xxl,
+    fontSize: FontSize.xl,
     fontWeight: FontWeight.bold,
     color: Colors.surface,
     fontFamily: 'Poppins-Bold',
