@@ -4,7 +4,7 @@ import { Colors, Spacing, FontSize, FontWeight } from '@/constants/Colors';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { Plus, Search, Edit, Trash2, Star, Camera, X } from 'lucide-react-native';
+import { Plus, Search, CreditCard as Edit, Trash2, Star, Camera, X } from 'lucide-react-native';
 
 export default function MenuScreen() {
   const [searchQuery, setSearchQuery] = useState('');
